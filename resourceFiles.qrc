@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Resource/briefing.html</file>
+        <file>Resource/overview_campaign.html</file>
+        <file>Resource/overview_campaign_ca.paa</file>
+        <file>Resource/overview_mission.html</file>
+        <file>Resource/overview_mission_ca.paa</file>
+        <file>Resource/Cutscene/mission.sqm</file>
+        <file>Resource/Cutscene/movie.sqf</file>
+    </qresource>
+</RCC>
