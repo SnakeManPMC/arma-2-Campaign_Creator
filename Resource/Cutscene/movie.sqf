@@ -11,8 +11,8 @@ _camera cameraEffect ["internal", "back"];
 _d = 7;
 
 // start
-_camera camPrepareTarget [61212.32,79833.27,-12525.39];
-_camera camPreparePos [294.15,1531.90,121.44];
+_camera camPrepareTarget leader pmcinf1;
+_camera camPreparePos [(getPosASL leader pmcinf1 select 0), (getPosASL leader pmcinf1 select 1) + 3, 1.5];
 _camera camPrepareFOV 0.700;
 _camera camCommitPrepared 0;
 waitUntil { camCommitted _camera; };
@@ -27,8 +27,8 @@ titleCut ["", "black in", 3];
 sleep _d;
 
 // some shots
-_camera camPrepareTarget [61212.32,79833.27,-12525.39];
-_camera camPreparePos [1057.50,1609.99,121.62];
+_camera camPrepareTarget leader pmcinf1;
+_camera camPreparePos [(getPosASL leader pmcinf1 select 0), (getPosASL leader pmcinf1 select 1) + 3, 1.5];
 _camera camCommitPrepared 0;
 waitUntil { camCommitted _camera; };
 sleep _d;
