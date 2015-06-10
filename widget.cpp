@@ -1,6 +1,5 @@
 #include "widget.h"
 #include "ui_widget.h"
-#include "../include/mission_generator.h"
 
 #include <QtWidgets>
 
