@@ -25,6 +25,7 @@ private:
     void CreateMissionDir(QString missionFileName, QString CamDir);
     void CreateCutsceneDir(QString missionFileName, QString CamDir);
     void CreateOverviewHTML(QDir file, QString CamDir);
+    QString injectMissionDigit(QString missionClassName, int i);
 };
 
 #endif // WIDGET_H

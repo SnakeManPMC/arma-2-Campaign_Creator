@@ -2,6 +2,7 @@
 #include "ui_widget.h"
 
 #include <QtWidgets>
+#include "mission_generator.h"
 
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
@@ -101,6 +102,7 @@ void Widget::on_pushButton_clicked()
 	
 	// mission class name for first mission
 	missionClassName = ui->missionTagName->text();
+	missionClassName.append("00");
 	missionClassName.append(QString::number(1));
 	
 	str1.append(missionClassName + ";");
@@ -116,6 +118,7 @@ void Widget::on_pushButton_clicked()
 		missionClassName.append("OC");
 		
 		missionClassNameNext = ui->missionTagName->text();
+		missionClassNameNext.append("00");
 		missionClassNameNext.append(QString::number(1));
 		
 		missionFileName = ui->missionTagName->text();
@@ -138,10 +141,18 @@ void Widget::on_pushButton_clicked()
 	{
 		// mission class name
 		missionClassName = ui->missionTagName->text();
+
+		// inject the double or single zeros in front of the mission number for sorting purposes
+		missionClassName = injectMissionDigit(missionClassName, i);
+
+		// now add the actual mission number digit
 		missionClassName.append(QString::number(i));
 
 		// mission class name for succesfully complete mission, ie next mission name.
 		missionClassNameNext = ui->missionTagName->text();
+
+		// inject zeros
+		missionClassNameNext = injectMissionDigit(missionClassNameNext, i);
 
 		// if we have cutscenes!
 		if (ui->cutsceneEveryMission->isChecked())
@@ -156,6 +167,7 @@ void Widget::on_pushButton_clicked()
 		
 		// mission file name plus extension of terrain name.
 		missionFileName = ui->missionTagName->text();
+		missionFileName = injectMissionDigit(missionFileName, i);
 		missionFileName.append(QString::number(i) + "." + terrainName);
 
 		// put in our stuff into string
@@ -173,14 +185,18 @@ void Widget::on_pushButton_clicked()
 		{
 			// mission class name
 			missionClassName = ui->missionTagName->text();
+			// inject zeros
+			missionClassName = injectMissionDigit(missionClassName, i);
 			missionClassName.append(QString::number(i) + "Cut");
 			
 			// mission class name for succesfully complete mission, ie next mission name.
 			missionClassNameNext = ui->missionTagName->text();
+			missionClassNameNext = injectMissionDigit(missionClassNameNext, i);
 			missionClassNameNext.append(QString::number(i + 1));
 			
 			// mission file name plus extension of terrain name.
 			missionFileName = ui->missionTagName->text();
+			missionFileName = injectMissionDigit(missionFileName, i);
 			missionFileName.append(QString::number(i) + "Cut." + terrainName);
 			
 			// put in our stuff into string
@@ -198,6 +214,7 @@ void Widget::on_pushButton_clicked()
 		{
 			// mission class name
 			missionClassName = ui->missionTagName->text();
+			missionClassName = injectMissionDigit(missionClassName, i);
 			missionClassName.append(QString::number(i + 1));
 			
 			// ending cutscene optional checkbox
@@ -215,6 +232,7 @@ void Widget::on_pushButton_clicked()
 			
 			// mission file name plus extension of terrain name.
 			missionFileName = ui->missionTagName->text();
+			missionFileName = injectMissionDigit(missionFileName, i);
 			missionFileName.append(QString::number(i + 1) + "." + terrainName);
 		
 			// write it down
@@ -373,4 +391,21 @@ void Widget::CreateOverviewHTML(QDir file, QString CamDir)
 	QFile foo(file.absolutePath() + "/overview_512x512_ca.paa");
 	foo.setPermissions(QFile::WriteUser);
 	foo.close();
+}
+
+QString Widget::injectMissionDigit(QString missionClassName, int i)
+{
+	// inject <TAG>00<NUMBER> type stuff so they are sorted properly in mission editor
+	// inject 00
+	if (i < 10)
+	{
+		missionClassName.append("00");
+	}
+	// inject 0
+	if (i > 9 && i < 100)
+	{
+		missionClassName.append("0");
+	}
+
+	return missionClassName;
 }

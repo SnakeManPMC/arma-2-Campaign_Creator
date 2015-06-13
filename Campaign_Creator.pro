@@ -11,9 +11,11 @@ TARGET = Campaign_Creator
 TEMPLATE = app
 
 SOURCES += main.cpp\
-	widget.cpp
+	widget.cpp\
+mission_generator.cpp
 
-HEADERS  += widget.h
+HEADERS  += widget.h\
+mission_generator.h
 
 FORMS    += widget.ui
 
