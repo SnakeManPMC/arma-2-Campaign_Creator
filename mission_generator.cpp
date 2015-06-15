@@ -1,5 +1,5 @@
 #include <QtCore/QCoreApplication>
-#include "../include/mission_generator.h"
+#include "mission_generator.h"
 //#include "create_units.h"
 #include <QFile>
 #include <QTextStream>

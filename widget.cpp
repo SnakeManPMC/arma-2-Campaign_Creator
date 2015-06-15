@@ -151,12 +151,16 @@ void Widget::on_pushButton_clicked()
 		// mission class name for succesfully complete mission, ie next mission name.
 		missionClassNameNext = ui->missionTagName->text();
 
-		// inject zeros
-		missionClassNameNext = injectMissionDigit(missionClassNameNext, i);
+		// inject zeros but add one because this is for the NEXT mission
+		missionClassNameNext = injectMissionDigit(missionClassNameNext, (i + 1));
 
 		// if we have cutscenes!
 		if (ui->cutsceneEveryMission->isChecked())
 		{
+			// ugly crap :(
+			if (i == 9) missionClassNameNext.append("0");
+			if (i == 99) missionClassNameNext.append("0");
+
 			missionClassNameNext.append(QString::number(i));
 			missionClassNameNext.append("Cut");
 		}
@@ -191,7 +195,7 @@ void Widget::on_pushButton_clicked()
 			
 			// mission class name for succesfully complete mission, ie next mission name.
 			missionClassNameNext = ui->missionTagName->text();
-			missionClassNameNext = injectMissionDigit(missionClassNameNext, i);
+			missionClassNameNext = injectMissionDigit(missionClassNameNext, (i + 1));
 			missionClassNameNext.append(QString::number(i + 1));
 			
 			// mission file name plus extension of terrain name.
@@ -214,7 +218,7 @@ void Widget::on_pushButton_clicked()
 		{
 			// mission class name
 			missionClassName = ui->missionTagName->text();
-			missionClassName = injectMissionDigit(missionClassName, i);
+			missionClassName = injectMissionDigit(missionClassName, (i + 1));
 			missionClassName.append(QString::number(i + 1));
 			
 			// ending cutscene optional checkbox
@@ -232,7 +236,7 @@ void Widget::on_pushButton_clicked()
 			
 			// mission file name plus extension of terrain name.
 			missionFileName = ui->missionTagName->text();
-			missionFileName = injectMissionDigit(missionFileName, i);
+			missionFileName = injectMissionDigit(missionFileName, (i + 1));
 			missionFileName.append(QString::number(i + 1) + "." + terrainName);
 		
 			// write it down
@@ -393,6 +397,12 @@ void Widget::CreateOverviewHTML(QDir file, QString CamDir)
 	foo.close();
 }
 
+
+/*
+
+  Add the zeros to class and file names so they are sorted properly in-game
+
+*/
 QString Widget::injectMissionDigit(QString missionClassName, int i)
 {
 	// inject <TAG>00<NUMBER> type stuff so they are sorted properly in mission editor
