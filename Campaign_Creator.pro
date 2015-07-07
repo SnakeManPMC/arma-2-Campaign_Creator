@@ -12,10 +12,10 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
 	widget.cpp\
-../mission_generator/mission_generator.cpp
+mission_generator.cpp
 
 HEADERS  += widget.h\
-../mission_generator/mission_generator.h
+mission_generator.h
 
 FORMS    += widget.ui
 

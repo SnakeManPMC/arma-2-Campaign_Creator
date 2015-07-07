@@ -22,7 +22,7 @@ private slots:
 private:
     Ui::Widget *ui;
 
-    void CreateMissionDir(QString missionFileName, QString CamDir);
+    void CreateMissionDir(QString missionFileName, QString CamDir, QString missionRealName);
     void CreateCutsceneDir(QString missionFileName, QString CamDir);
     void CreateOverviewHTML(QDir file, QString CamDir);
     QString injectMissionDigit(QString missionClassName, int i);

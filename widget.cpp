@@ -22,8 +22,8 @@ void Widget::on_pushButton_clicked()
 	QString missionClassName;
 	QString missionClassNameNext;
 
-	// mission file name
-	QString missionFileName;
+	// mission file name and real readable name
+	QString missionFileName, missionRealName;
 
 	// terrain name
 	QString terrainName = ui->terrainName->currentText();
@@ -123,6 +123,8 @@ void Widget::on_pushButton_clicked()
 		
 		missionFileName = ui->missionTagName->text();
 		missionFileName.append("OC");
+		// create real name
+		missionRealName = missionFileName;
 		missionFileName.append("." + terrainName);
 		
 		// put in our stuff into string
@@ -172,13 +174,16 @@ void Widget::on_pushButton_clicked()
 		// mission file name plus extension of terrain name.
 		missionFileName = ui->missionTagName->text();
 		missionFileName = injectMissionDigit(missionFileName, i);
+		// real human readable name
+		missionRealName = missionFileName;
+		missionRealName.append(QString::number(i));
 		missionFileName.append(QString::number(i) + "." + terrainName);
 
 		// put in our stuff into string
 		str1.append("\n\t\tclass " + missionClassName + ": MissionDefault\n\t\t{\n\t\t\tend1 = " + missionClassNameNext + ";\n\t\t\tlost = " + missionClassName + ";\n\t\t\ttemplate = " + missionFileName + ";\n\t\t};\n");
 
 		// write missions dir
-		CreateMissionDir(missionFileName, CamDir);
+		CreateMissionDir(missionFileName, CamDir, missionRealName);
 
 		/*
 
@@ -201,6 +206,9 @@ void Widget::on_pushButton_clicked()
 			// mission file name plus extension of terrain name.
 			missionFileName = ui->missionTagName->text();
 			missionFileName = injectMissionDigit(missionFileName, i);
+			// real human readable name
+			missionRealName = missionFileName;
+			missionRealName.append(QString::number(i));
 			missionFileName.append(QString::number(i) + "Cut." + terrainName);
 			
 			// put in our stuff into string
@@ -237,13 +245,16 @@ void Widget::on_pushButton_clicked()
 			// mission file name plus extension of terrain name.
 			missionFileName = ui->missionTagName->text();
 			missionFileName = injectMissionDigit(missionFileName, (i + 1));
+			// real human readable name
+			missionRealName = missionFileName;
+			missionRealName.append(QString::number(i));
 			missionFileName.append(QString::number(i + 1) + "." + terrainName);
 		
 			// write it down
 			str1.append("\n\t\t//Final mission!\n\t\tclass " + missionClassName + ": MissionDefault\n\t\t{\n\t\t\tend1 = " + missionClassNameNext + ";\n\t\t\tlost = " + missionClassName + ";\n\t\t\ttemplate = " + missionFileName + ";\n\t\t};\n");
 
 			// write missions dir
-			CreateMissionDir(missionFileName, CamDir);
+			CreateMissionDir(missionFileName, CamDir, missionRealName);
 
 			// ending cutscene if checkbox is on
 			if (ui->endingCutscene->isChecked())
@@ -256,6 +267,8 @@ void Widget::on_pushButton_clicked()
 				
 				missionFileName = ui->missionTagName->text();
 				missionFileName.append("EC");
+				// real human readable name
+				missionRealName = missionFileName;
 				missionFileName.append("." + terrainName);
 				
 				// write it down
@@ -273,8 +286,8 @@ void Widget::on_pushButton_clicked()
 	// remaining closing curly braces
 	str1.append("\t};\n};\n");
 
-	QTextStream kala1(&des);
-	kala1 << str1;
+	QTextStream fish1(&des);
+	fish1 << str1;
 	des.close();
 
 	// overview.html creation
@@ -289,7 +302,7 @@ void Widget::on_pushButton_clicked()
 Create mission directory with mission.sqm, description.ext, init.sqf etc using the external function
 
 */
-void Widget::CreateMissionDir(QString missionFileName, QString CamDir)
+void Widget::CreateMissionDir(QString missionFileName, QString CamDir, QString missionRealName)
 {
 	QDir file;
 	file.cd(CamDir);
@@ -297,7 +310,10 @@ void Widget::CreateMissionDir(QString missionFileName, QString CamDir)
 	file.mkdir (missionFileName);
 
 	// another class comes from mission_generator.h / cpp !
-	Mission_Generator(CamDir + "\\" + "Missions" + "\\" + missionFileName);
+	Mission_Generator gObj;
+	gObj.setName(missionRealName);
+	gObj.setDescription(missionRealName);
+	gObj.Do_Mission(CamDir + "\\" + "Missions" + "\\" + missionFileName);
 
 	// copies overview.html, paa and briefing.html for every mission dir using our resource dir as source
 	QFile::copy(":/Resource/overview_mission.html", CamDir + "\\" + "Missions" + "\\" + missionFileName + "\\" + "overview.html");
