@@ -8,3 +8,5 @@ Creates:
 * overview.html + placeholder paa file
 
 Supports campaign creation up to 999 missions, should be enough for everyone, huh? :)
+
+Uses mission_generator class (included).
